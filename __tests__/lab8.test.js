@@ -160,7 +160,7 @@ describe('Basic user flow for Website', () => {
   // after we refresh the page
   it('Checking number of items in cart on screen after reload', async () => {
     console.log('Checking number of items in cart on screen after reload...');
-    // TODO - Step 7
+    // DONE - Step 7
     // Reload the page once more, then go through each <product-item> to make sure that it has remembered nothing
     // is in the cart - do this by checking the text on the buttons so that they should say "Add to Cart".
     await page.reload();
@@ -190,7 +190,9 @@ describe('Basic user flow for Website', () => {
   // cart being empty
   it('Checking the localStorage to make sure cart is correct', async () => {
     console.log('Checking the localStorage...');
-    // TODO - Step 8
+    // DONE - Step 8
     // At this point he item 'cart' in localStorage should be '[]', check to make sure it is
+    const localStorage = await page.evaluate(() => localStorage.getItem("cart"));
+    expect(localStorage).toBe('[]');
   });
 });
