@@ -121,6 +121,7 @@ describe('Basic user flow for Website', () => {
 
   // Check to make sure that the cart in localStorage is what you expect
   it('Checking the localStorage to make sure cart is correct', async () => {
+    console.log('Checking the localStorage to make sure cart is correct');
     // DONE - Step 5
     // At this point he item 'cart' in localStorage should be 
     // '[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]', check to make sure it is
@@ -132,9 +133,28 @@ describe('Basic user flow for Website', () => {
   // number in the top right of the screen is 0
   it('Checking number of items in cart on screen after removing from cart', async () => {
     console.log('Checking number of items in cart on screen...');
-    // TODO - Step 6
+    // DONE - Step 6
     // Go through and click "Remove from Cart" on every single <product-item>, just like above.
+    const prodItems = await page.$$('product-item');
+    for(i = 0; i < prodItems.length; i++) {
+      const shadowR = await prodItems[i].getProperty("shadowRoot");
+      let button = await shadowR.$('button');
+      await button.evaluate(button => button.click())
+    }
+
     // Once you have, check to make sure that #cart-count is now 0
+    let cartNum;
+    const spans = await page.$$("span");
+    for(i = 0; i < spans.length; i++) {
+      const id = await spans[i].getProperty("id");
+      let idText = await id.jsonValue();
+      if(idText === 'cart-count') {
+        let cartText = await spans[i].getProperty("innerText")
+        cartNum = await cartText.jsonValue();
+      }
+    }
+    
+    expect(cartNum).toBe('0');
   }, 10000);
 
   // Checking to make sure that it remembers us removing everything from the cart
